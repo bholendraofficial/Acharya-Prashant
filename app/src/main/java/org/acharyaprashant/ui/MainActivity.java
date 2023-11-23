@@ -26,19 +26,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findIDS();
-        setupAppBar();
-        setupAdapter();
-        getBooksData();
-
+        findIDS(); // Finding view IDs
+        setupAppBar(); // Setting up the app bar
+        setupAdapter(); // Setting up the RecyclerView adapter
+        getBooksData(); // Fetching book data
     }
 
+    // Method to find view IDs
     private void findIDS() {
         recyclerView = findViewById(R.id.recyclerView);
         progressbar = findViewById(R.id.progressbar);
         tv_error_message = findViewById(R.id.tv_error_message);
     }
 
+    // Method to set up the app bar
     private void setupAppBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -48,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Method to set up the RecyclerView adapter
     private void setupAdapter() {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         bookAdapter = new BookAdapter();
         recyclerView.setAdapter(bookAdapter);
     }
 
+    // Method to fetch book data using ViewModel
     private void getBooksData() {
         BookViewModel bookViewModel = new ViewModelProvider(this).get(BookViewModel.class);
         bookViewModel.getBooks().observe(this, bookResult -> {
@@ -63,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
                     progressbar.setVisibility(View.VISIBLE);
                 } else {
                     if (bookResult.getBooks() != null) {
-                        // Process and use bookResult.getBooks()
+                        // Process and set books in the adapter
                         bookAdapter.setBooks(bookResult.getBooks());
                     } else {
-                        // Handle error message (bookResult.getErrorMessage())
+                        // Show error message if no books or an error occurred
                         tv_error_message.setText(bookResult.getErrorMessage());
                     }
                     progressbar.setVisibility(View.GONE);
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    // Override to handle the Up button action in the app bar
     @Override
     public boolean onSupportNavigateUp() {
         ActivityCompat.finishAffinity(this);

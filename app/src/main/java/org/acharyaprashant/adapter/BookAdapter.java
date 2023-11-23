@@ -25,10 +25,12 @@ import java.util.List;
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private List<Book> books;
 
+    // Getter method for books list
     public List<Book> getBooks() {
         return books;
     }
 
+    // Setter method for books list with notifyDataSetChanged call
     @SuppressLint("NotifyDataSetChanged")
     public void setBooks(List<Book> books) {
         this.books = books;
@@ -38,6 +40,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the item_book layout for each item in the RecyclerView
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_book, parent, false);
         return new BookViewHolder(itemView);
@@ -46,10 +49,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         if (books != null) {
+            // Get the Book object at the current position
             Book currentBook = books.get(position);
+
+            // Set title, subtitle, and price information in respective TextViews
             holder.tv_title.setText(currentBook.getTitle());
             holder.tv_subtitle.setText(currentBook.getSubtitle());
 
+            // Display price information using HTML formatting in TextView
             if (currentBook.getOriginalAmount() > 0) {
                 String htmlText = "Suggested donation: ₹" + currentBook.getAmount() + " ₹<strike>" + currentBook.getOriginalAmount() + "</strike>";
                 holder.tv_price_tag.setText(Html.fromHtml(htmlText));
@@ -60,7 +67,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                 holder.tv_price_tag.setText("Available for free");
             }
 
-
+            // Load cover image using Glide into ImageView with rounded corners
             Glide.with(holder.itemView.getContext())
                     .load(currentBook.getCoverImage())
                     .transform(new RoundedCorners(20))
@@ -75,6 +82,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         return books != null ? books.size() : 0;
     }
 
+    // ViewHolder class to hold the views of each item in the RecyclerView
     class BookViewHolder extends RecyclerView.ViewHolder {
         private final AppCompatTextView tv_title;
         private final AppCompatTextView tv_subtitle;
@@ -83,10 +91,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
         public BookViewHolder(View itemView) {
             super(itemView);
+            // Initialize TextViews and ImageView
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_subtitle = itemView.findViewById(R.id.tv_subtitle);
             tv_price_tag = itemView.findViewById(R.id.tv_price_tag);
             iv_coverImage = itemView.findViewById(R.id.iv_coverImage);
+
+            // Set click listener to open the book's URL in a browser
             itemView.setOnClickListener(v -> {
                 String url = getBooks().get(getAdapterPosition()).getPaperBookURL();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -99,7 +110,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     // For example, show a message to the user
                     Toast.makeText(itemView.getContext(), "No application available to handle this action", Toast.LENGTH_SHORT).show();
                 }
-
             });
         }
     }
