@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Bholendra Singh
+ */
+
 package org.acharyaprashant.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Bholendra Singh
+ */
+
 package org.acharyaprashant.model;
 
 import com.google.gson.annotations.Expose;

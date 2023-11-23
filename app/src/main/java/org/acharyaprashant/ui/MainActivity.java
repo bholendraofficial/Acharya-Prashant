@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Bholendra Singh
+ */
+
 package org.acharyaprashant.ui;
 
 import android.os.Bundle;
