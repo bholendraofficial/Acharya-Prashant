@@ -1,6 +1,6 @@
-package org.acharyaprashant.api.service;
+package org.acharyaprashant.service;
 
-import org.acharyaprashant.api.model.Book;
+import org.acharyaprashant.model.Book;
 
 import java.util.List;
 

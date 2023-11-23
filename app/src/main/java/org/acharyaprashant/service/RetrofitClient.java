@@ -1,11 +1,11 @@
-package org.acharyaprashant.api.service;
+package org.acharyaprashant.service;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static Retrofit retrofit;
     private static final String BASE_URL = "https://acharyaprashant.org/";
+    private static Retrofit retrofit;
 
     public static Retrofit getInstance() {
         if (retrofit == null) {

@@ -1,4 +1,4 @@
-package org.acharyaprashant.api.model;
+package org.acharyaprashant.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

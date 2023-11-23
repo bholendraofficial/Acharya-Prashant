@@ -1,23 +1,31 @@
 package org.acharyaprashant.adapter;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 import org.acharyaprashant.R;
-import org.acharyaprashant.api.model.Book;
+import org.acharyaprashant.model.Book;
 
 import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private List<Book> books;
+
+    public List<Book> getBooks() {
+        return books;
+    }
 
     public void setBooks(List<Book> books) {
         this.books = books;
@@ -41,6 +49,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
             Glide.with(holder.itemView.getContext())
                     .load(currentBook.getCoverImage())
+                    .transform(new RoundedCorners(20))
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
                     .into(holder.iv_coverImage);
@@ -52,16 +61,30 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         return books != null ? books.size() : 0;
     }
 
-    static class BookViewHolder extends RecyclerView.ViewHolder {
-        private AppCompatTextView tv_title;
-        private AppCompatTextView tv_subtitle;
-        private AppCompatImageView iv_coverImage;
+    class BookViewHolder extends RecyclerView.ViewHolder {
+        private final AppCompatTextView tv_title;
+        private final AppCompatTextView tv_subtitle;
+        private final AppCompatImageView iv_coverImage;
 
         public BookViewHolder(View itemView) {
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_subtitle = itemView.findViewById(R.id.tv_subtitle);
             iv_coverImage = itemView.findViewById(R.id.iv_coverImage);
+            itemView.setOnClickListener(v -> {
+                String url = getBooks().get(getAdapterPosition()).getPaperBookURL();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+
+                // Verify if there's an app to handle this intent before starting the activity
+                if (intent.resolveActivity(itemView.getContext().getPackageManager()) != null) {
+                    itemView.getContext().startActivity(intent);
+                } else {
+                    // Handle case where there is no app available to handle the intent
+                    // For example, show a message to the user
+                    Toast.makeText(itemView.getContext(), "No application available to handle this action", Toast.LENGTH_SHORT).show();
+                }
+
+            });
         }
     }
 }
