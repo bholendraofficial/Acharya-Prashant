@@ -3,6 +3,7 @@ package org.acharyaprashant.adapter;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,17 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             holder.tv_title.setText(currentBook.getTitle());
             holder.tv_subtitle.setText(currentBook.getSubtitle());
 
+            if (currentBook.getOriginalAmount() > 0) {
+                String htmlText = "Suggested donation: ₹" + currentBook.getAmount() + " ₹<strike>" + currentBook.getOriginalAmount() + "</strike>";
+                holder.tv_price_tag.setText(Html.fromHtml(htmlText));
+            } else if (currentBook.getAmount() > 0) {
+                String text = "Suggested donation: ₹" + currentBook.getAmount();
+                holder.tv_price_tag.setText(text);
+            } else {
+                holder.tv_price_tag.setText("Available for free");
+            }
+
+
             Glide.with(holder.itemView.getContext())
                     .load(currentBook.getCoverImage())
                     .transform(new RoundedCorners(20))
@@ -66,12 +78,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     class BookViewHolder extends RecyclerView.ViewHolder {
         private final AppCompatTextView tv_title;
         private final AppCompatTextView tv_subtitle;
+        private final AppCompatTextView tv_price_tag;
         private final AppCompatImageView iv_coverImage;
 
         public BookViewHolder(View itemView) {
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_subtitle = itemView.findViewById(R.id.tv_subtitle);
+            tv_price_tag = itemView.findViewById(R.id.tv_price_tag);
             iv_coverImage = itemView.findViewById(R.id.iv_coverImage);
             itemView.setOnClickListener(v -> {
                 String url = getBooks().get(getAdapterPosition()).getPaperBookURL();

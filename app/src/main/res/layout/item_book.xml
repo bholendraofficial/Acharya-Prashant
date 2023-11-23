@@ -44,6 +44,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/tv_price_tag"
             android:text="Available for free"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
