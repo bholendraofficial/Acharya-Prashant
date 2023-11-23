@@ -26,14 +26,14 @@ public class BookRepository {
 
         bookService.getBooks().enqueue(new Callback<List<Book>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Book>> call, Response<List<Book>> response) {
+            public void onResponse(@NonNull Call<List<Book>> call, @NonNull Response<List<Book>> response) {
+                BookResult bookResult;
                 if (response.isSuccessful()) {
-                    BookResult bookResult = new BookResult(false, response.body(), null);
-                    bookResultLiveData.setValue(bookResult);
+                    bookResult = new BookResult(false, response.body(), null);
                 } else {
-                    BookResult bookResult = new BookResult(false, null, "Failed to fetch books. Please try again.");
-                    bookResultLiveData.setValue(bookResult);
+                    bookResult = new BookResult(false, null, "Failed to fetch books. Please try again.");
                 }
+                bookResultLiveData.setValue(bookResult);
             }
 
             @Override

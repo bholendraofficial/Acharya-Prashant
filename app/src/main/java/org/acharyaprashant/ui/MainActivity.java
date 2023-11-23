@@ -19,7 +19,6 @@ import org.acharyaprashant.viewmodel.BookViewModel;
 public class MainActivity extends AppCompatActivity {
     ProgressBar progressbar;
     AppCompatTextView tv_error_message;
-    private BookViewModel bookViewModel;
     private RecyclerView recyclerView;
     private BookAdapter bookAdapter;
 
@@ -30,8 +29,33 @@ public class MainActivity extends AppCompatActivity {
         findIDS();
         setupAppBar();
         setupAdapter();
-        bookViewModel = new ViewModelProvider(this).get(BookViewModel.class);
+        getBooksData();
 
+    }
+
+    private void findIDS() {
+        recyclerView = findViewById(R.id.recyclerView);
+        progressbar = findViewById(R.id.progressbar);
+        tv_error_message = findViewById(R.id.tv_error_message);
+    }
+
+    private void setupAppBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Browse Books");
+            actionBar.setElevation(0f);
+        }
+    }
+
+    private void setupAdapter() {
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        bookAdapter = new BookAdapter();
+        recyclerView.setAdapter(bookAdapter);
+    }
+
+    private void getBooksData() {
+        BookViewModel bookViewModel = new ViewModelProvider(this).get(BookViewModel.class);
         bookViewModel.getBooks().observe(this, bookResult -> {
             if (bookResult != null) {
                 if (bookResult.isLoading()) {
@@ -49,16 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-    }
-
-    private void setupAppBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Browse Books");
-            actionBar.setElevation(0f);
-        }
     }
 
 
@@ -66,17 +80,5 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         ActivityCompat.finishAffinity(this);
         return true;
-    }
-
-    private void setupAdapter() {
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        bookAdapter = new BookAdapter();
-        recyclerView.setAdapter(bookAdapter);
-    }
-
-    private void findIDS() {
-        recyclerView = findViewById(R.id.recyclerView);
-        progressbar = findViewById(R.id.progressbar);
-        tv_error_message = findViewById(R.id.tv_error_message);
     }
 }

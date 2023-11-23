@@ -1,5 +1,6 @@
 package org.acharyaprashant.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         return books;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setBooks(List<Book> books) {
         this.books = books;
         notifyDataSetChanged();
